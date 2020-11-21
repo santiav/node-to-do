@@ -76,18 +76,17 @@ const actualizar = (descripcion, completado = true) => {
 const borrar = (descripcion) => {
     cargarDB();
 
-    let index = listadoPorHacer.findIndex(tarea => {
-        return tarea.descripcion === descripcion;
+    // de esta forma solo lista los q NO coinciden, asi se puede guardar el listado SIN la tarea que queremos borrar
+    let nuevoListado = listadoPorHacer.filter( tarea => {
+        return tarea.descripcion !== descripcion;
     })
-    console.log("El indice es", index)
 
-    if ( index >= 0) {
-        listadoPorHacer.splice(index, 1)
-    
-        guardarDB();
-        return true
+    if (listadoPorHacer.length === nuevoListado.length) {
+        return false;
     } else {
-        return false
+        listadoPorHacer = nuevoListado;
+        guardarDB();
+        return true;
     }
 }
 
